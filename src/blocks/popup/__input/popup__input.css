@@ -1,0 +1,35 @@
+.popup__input {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  border: 0;
+  border-bottom: 1px solid rgb(0, 0, 0, .2);
+  box-sizing: border-box;
+  outline: none;
+  width: 358px;
+
+  margin: 0 0 0 0;
+  padding: 0 0 10px 0;
+
+}
+
+/* теперь при фокусе зелененькая черта */
+/*
+.popup__input:not(:focus):valid {
+
+  border-bottom: 1px solid rgb(138, 219, 158);
+}
+
+.popup__input:not(:focus):invalid{
+  border-bottom: 1px solid #FF0000;
+}*/
+
+
+@media screen and (max-width: 767px) {
+  .popup__input {
+    max-width: 238px;
+
+  }
+}
+

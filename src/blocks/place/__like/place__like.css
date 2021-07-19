@@ -1,0 +1,22 @@
+.place__like {
+    height: 19px;
+    width: 22px;
+    cursor: pointer;
+    outline-style: none;
+    background: transparent;
+    background-image: url('../../../images/like.svg');
+    background-size: 100% 100%;
+
+    border: 0;
+    padding: 0;
+    margin-bottom: 3px;
+    transition: .3s;
+}
+
+.place__like:hover{
+    opacity: 0.5;
+}
+
+/*.place__like:active{
+    background-image: url('../../../images/Union.svg');
+}*/

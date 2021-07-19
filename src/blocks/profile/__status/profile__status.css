@@ -1,0 +1,26 @@
+.profile__status {
+  margin: 8px 0 0 0;
+  padding: 0;
+  max-width: 500px;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media screen and (max-width: 1023px) {
+  .profile__status {
+    font-size: 14px;
+    line-height: 17px;
+    margin: 0 0 0 16px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .profile__status {
+    /* для статуса по центру на мелких разрешениях*/
+    margin: 0 auto;
+    text-align: center;
+  }
+}

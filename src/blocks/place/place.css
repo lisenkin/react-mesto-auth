@@ -1,0 +1,10 @@
+.place {
+  display: grid;
+  justify-content: center;
+  width: 282px;
+  background: #FFFFFF;
+  border-radius: 10px;
+  overflow: hidden;
+  box-sizing: border-box;
+  position: relative;
+}

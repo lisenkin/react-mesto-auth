@@ -11,11 +11,16 @@ import ImagePopup from './ImagePopup.js';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
-
 import api from '../utils/api.js'
+//new parts
+import Login from "./Login";
+import Register from "./Register";
+import ProtectedRoute from "./ProtectedRoute";
+import InfoTooltip from "./InfoTooltip";
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
+import * as auth from '../utils/auth';
 
-//сорри за прошлую итерацию, почему-то не загрузилось на гит :(
-//update
+
 
 //попробуем так
 //стоило так радостно вспоминать классы что б снова переписывать  на функции(
@@ -24,24 +29,29 @@ function App() {
     name: "Loading...",
     about: ''
   });
-
+  // + mail + loggedIn
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({ isOpen: false });
   const [cards, setCards] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  //const [isLoading, setIsLoading] = useState(false); выключим на время
+  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [email, setEmail] = React.useState('');
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
+  const history = useHistory();
+  const [isSuccess, setSuccess] = React.useState(false);
 
 
   //загрузим карточки
   useEffect(() => {
-    setIsLoading(true)
+    //setIsLoading(true)
     api.getInitialCards()
       .then(res => {
         setCards(res)
       })
       .catch(err => console.log(`Error: ${err}`))
-      .finally(() => setIsLoading(false))
+     // .finally(() => setIsLoading(false))
   }, []);
 
   //загрузим юзер инфо дернув апи
@@ -52,24 +62,7 @@ function App() {
       })
       .catch(err => console.log(`Error: ${err}`));
   }, []);
-  //обновим юзер инфо на новую
-  function handleUpdateUser({ name, about }) {
-    api.setUserInfo({ name, about })
-      .then(res => {
-        setCurrentUser(res);
-        closeAllPopups();
-      })
-      .catch(err => console.log(`Error: ${err}`));
-  }
-  //обновим аватар
-  function handleUpdateAvatar(avatar) {
-    api.editUserAvatar(avatar)
-      .then(res => {
-        setCurrentUser(avatar);
-        closeAllPopups();
-      })
-      .catch(err => console.log(`Error: ${err}`));
-  }
+
 
   //закрытие всех попапов (установим всем фолс)
   function closeAllPopups() {
@@ -79,8 +72,6 @@ function App() {
     setSelectedCard({ isOpen: false });  //сброси
   }
 
-  //кто вообще сказал что реакт легче 9 спринта?
-  // upd после 11 спринта вроде не так плохо
 
   //эдит профиль
   const handleEditProfileClick = () => { setIsEditProfilePopupOpen(true) }
@@ -111,6 +102,25 @@ function App() {
       })
       .catch(err => console.log(`Error: ${err}`));
   }
+    //обновим юзер инфо на новую
+    function handleUpdateUser({ name, about }) {
+      api.setUserInfo({ name, about })
+        .then(res => {
+          setCurrentUser(res);
+          closeAllPopups();
+        })
+        .catch(err => console.log(`Error: ${err}`));
+    }
+    //обновим аватар
+    function handleUpdateAvatar(avatar) {
+      api.editUserAvatar(avatar)
+        .then(res => {
+          setCurrentUser(avatar);
+          closeAllPopups();
+        })
+        .catch(err => console.log(`Error: ${err}`));
+    }
+
   //добавить карточку
   function handleAddPlaceSubmit({ name, link }) {
     api.setCard({ name, link })
@@ -120,26 +130,70 @@ function App() {
       })
       .catch(err => console.log(`Error: ${err}`));
   }
+
+  function handleRegister(email, password) {
+    auth.register(email, password)
+    .then(() => {
+        history.push("/sign-in");
+        setSuccess(true);
+        setIsInfoTooltipOpen(true);
+    })
+    .catch((err) => {
+        console.error(err);
+        setSuccess(false);
+        setIsInfoTooltipOpen(true);
+    });
+}
+
+  function handleLogin(email, password) {
+    return auth
+    .authorize(email, password)
+    .then((data) => {
+        localStorage.setItem("jwt", data.token);
+        setEmail(email);
+        setLoggedIn(true);
+        history.push("/");
+    })
+    .catch((err) => {
+        console.error(err);
+        setSuccess(false);
+        setIsInfoTooltipOpen(true);
+    });
+}
+
+  function handleLogout() {
+    localStorage.removeItem("jwt");
+    setEmail('');
+    setLoggedIn(false);
+    history.push('/sign-in');
+  }
+
+
   return (
     <div className="page__content">
       <CurrentUserContext.Provider value={currentUser}>
-        <Header
-          srcLogo={logo}
-          altLogo="лого место"
-        />
-
-
-        <Main
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onEditAvatar={handleEditAvatarClick}
-          onCardClick={handleCardClick}
-          cards={cards}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
-          isLoading={isLoading}
-        />
-
+      <Header loggedIn={loggedIn} email={email} onSignout={handleLogout} />
+            <Switch>
+            <ProtectedRoute exact
+            path="/"
+            component={Main}
+            onEditAvatar={handleEditAvatarClick}
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            onCardClick={handleCardClick}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
+            cards={cards}
+            loggedIn={loggedIn}
+          />
+          <Route path='/sign-in'>
+            <Login onLogin={handleLogin} />
+          </Route>
+              <Route path='/sign-up'>
+            <Register onRegister={handleRegister} />
+          </Route>
+              <Route> {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}</Route>
+            </Switch>
 
         <Footer text="2021 mesto lisenkin" />
 

@@ -1,9 +1,11 @@
 
 ### Mesto React (now available in React! low price!  )
-Спринт 11.
+Спринт 10-11-12.
 
 ## В работе использовались:
 - [x] React
+- [x] React Create App
+
 
 
 ## Установка

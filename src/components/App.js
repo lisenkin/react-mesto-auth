@@ -1,6 +1,5 @@
 import React from "react";
 import { useState, useEffect } from 'react';
-import logo from '../images/Vector.svg';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js'
 import '../index.css';
 import Header from './Header.js';
@@ -132,7 +131,7 @@ function App() {
       })
       .catch(err => console.log(`Error: ${err}`));
   }
-
+//регистрация
   function handleRegister(email, password) {
     auth.register(email, password)
       .then(() => {
@@ -146,7 +145,7 @@ function App() {
         setIsInfoTooltipOpen(true);
       });
   }
-
+//логин
   function handleLogin(email, password) {
     return auth
       .authorize(email, password)
@@ -162,7 +161,7 @@ function App() {
         setIsInfoTooltipOpen(true);
       });
   }
-
+//логаут
   function handleLogout() {
     localStorage.removeItem("jwt");
     setEmail('');

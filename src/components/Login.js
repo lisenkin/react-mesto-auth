@@ -1,5 +1,6 @@
 import React from "react";
 
+// логин - собрать все из форм, сохранить.
 function Login(props) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -26,12 +27,12 @@ function Login(props) {
     <section className="form">
       <div className="form__content">
         <h2 className="form__title">Вход</h2>
-        <form className="form__form" name="form__form" onSubmit={handleSubmit}>
+        <form className="form__input" name="form__input" onSubmit={handleSubmit}>
         <input className="form__email" id="email" type="email" placeholder="Email" value={email} onChange={handleChange} name="email" required />
           <span className="form__email-error" id="email-error"></span>
           <input className="form__password" id="password" type="password" placeholder="Пароль" value={password} onChange={handleChange} name="password" required />
           <span className="form__password-error" id="password-error"></span>
-          <button className="form__button " type="submit">
+          <button className="form__button" type="submit">
             Войти
           </button>
         </form>

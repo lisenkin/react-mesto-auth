@@ -2,14 +2,14 @@ import React from "react";
 import logo from '../images/Vector.svg';
 import { useLocation, Link } from "react-router-dom";
 
-
+//добавим ссылки для авторизации и нет
 function Header(props) {
   const location = useLocation();
   return (
     <header className="header page__header">
       <img src={logo} alt="mesto logo" className="logo" />
       {location.pathname === "/" && (
-        <div className="header__logged">
+        <div className="header__block">
           <p className="header__email">{props.email}</p>
           <a className="header__link" onClick={props.onSignout}>
             Выйти

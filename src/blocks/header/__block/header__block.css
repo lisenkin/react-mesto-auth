@@ -1,0 +1,9 @@
+.header__block {
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.header__block:hover {
+  opacity: 0.6;
+}

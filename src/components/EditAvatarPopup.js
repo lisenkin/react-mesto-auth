@@ -5,16 +5,14 @@ import PopupWithForm from './PopupWithForm';
 function EditAvatarPopup(props) {
   const currentUser = useContext(CurrentUserContext);
 
-  const [avatar, setAvatar] = useState(currentUser.avatar);
+  const [avatar, setAvatar] = useState('');
 
   function handleChangeAvatar(e) {
     setAvatar(e.target.value);
   }
-
-  useEffect(() => {
+  /*useEffect(() => {
     setAvatar(currentUser.avatar);
-  }, [currentUser]);
-
+  }, [currentUser]);*/
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -37,6 +35,7 @@ function EditAvatarPopup(props) {
         type="url"
         placeholder="Ссылка на аватар"
         name="popup-input-url-avatar"
+        value = {avatar || ''}
         onChange={handleChangeAvatar}
         required
       />

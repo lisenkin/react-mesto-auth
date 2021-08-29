@@ -135,12 +135,13 @@ function App() {
   function handleRegister(email, password) {
     auth.register(email, password)
       .then((data) => {
-        if (data) {
+        if (data){
         history.push("/sign-in");
         setSuccess(true);
         setIsInfoTooltipOpen(true);
         }
       })
+
       .catch((err) => {
         console.error(err);
         setSuccess(false);

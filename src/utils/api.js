@@ -1,4 +1,4 @@
-import { get } from "mongoose";
+//import { get } from "mongoose";
 
 // хоть тут не надо все переписывать *ну почти
 class Api {

@@ -134,10 +134,12 @@ function App() {
 //регистрация
   function handleRegister(email, password) {
     auth.register(email, password)
-      .then(() => {
+      .then((data) => {
+        if (data) {
         history.push("/sign-in");
         setSuccess(true);
         setIsInfoTooltipOpen(true);
+        }
       })
       .catch((err) => {
         console.error(err);
@@ -147,23 +149,23 @@ function App() {
   }
 //логин
   function handleLogin(email, password) {
-    return auth
-      .authorize(email, password)
+
+      auth.authorize(email, password)
       .then((data) => {
-        localStorage.setItem("jwt", data.token);
+        if (data) {
         setEmail(email);
         setLoggedIn(true);
         history.push("/");
+        }
       })
       .catch((err) => {
         console.error(err);
-        setSuccess(false);
         setIsInfoTooltipOpen(true);
+        setSuccess(false);
       });
   }
 //логаут
   function handleLogout() {
-    localStorage.removeItem("jwt");
     setEmail('');
     setLoggedIn(false);
     history.push('/sign-in');
@@ -192,6 +194,7 @@ function App() {
         })
     }
   }
+
   return (
     <div className="page__content">
       <CurrentUserContext.Provider value={currentUser}>

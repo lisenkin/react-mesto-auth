@@ -3,15 +3,14 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import PopupWithForm from './PopupWithForm';
 
 function EditProfilePopup(props) {
+  const [name, setName] = useState("");
+  const [about, setAbout] = useState("");
   const currentUser = useContext(CurrentUserContext);
-
-  const [name, setName] = useState(currentUser.name);
-  const [about, setAbout] = useState(currentUser.about);
 
   useEffect(() => {
     setName(currentUser.name);
     setAbout(currentUser.about);
-  }, [currentUser,props.isOpen]);
+  }, [currentUser]);
 
   function handleSubmit(e) {
     e.preventDefault();

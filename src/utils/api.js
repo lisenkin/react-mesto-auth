@@ -38,7 +38,7 @@ class Api {
       .then(this._checkResponse)
     }
     //изменение юзеринфо передаем name и job(about)
-    setUserInfo({ name, about }) {
+    setUserInfo(data) {
       return fetch(`${this._baseUrl}/users/me`, {
         method: 'PATCH',
         credentials: 'include',
@@ -46,14 +46,14 @@ class Api {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          name,
-          about,
+          name: `${data.name}`,
+          about: `${data.about}`,
         })
       })
       .then(this._checkResponse)
     }
     //добавить карточку  data (name link)  POST
-    setCard({ name, link }) {
+    setCard(data) {
       return fetch(`${this._baseUrl}/cards`, {
         method: 'POST',
         credentials: 'include',
@@ -61,8 +61,9 @@ class Api {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-        name,
-        link
+       name: `${data.name}`,
+        link: `${data.link}`,
+
         })
       })
       .then(this._checkResponse)
@@ -80,7 +81,7 @@ class Api {
     }
 
     changeLikeCardStatus(cardId, isLiked) {
-      return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+      return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
         method: isLiked ? 'DELETE' : 'PUT',
         credentials: 'include',
         headers: {
@@ -111,7 +112,7 @@ class Api {
       .then(this._checkResponse)
     }*/
     // avatar = data
-    editUserAvatar(avatar) {
+    editUserAvatar(data) {
       return fetch(`${this._baseUrl}/users/me/avatar`, {
         method: 'PATCH',
         credentials: 'include',
@@ -119,7 +120,9 @@ class Api {
 
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(avatar)
+        body: JSON.stringify({
+          avatar: `${data.avatar}`
+        })
       })
       .then(this._checkResponse)
     }
@@ -129,8 +132,9 @@ class Api {
    // baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-24',
    // token: '1c58ab56-f6d5-4a78-b0cd-4b039a0e7da3'
     //groupId: 'cohort-24'
-    baseUrl: 'https://api.mesto.russia.nomoredomains.monster',
-    //baseUrl: 'http://localhost:3000',
+    //baseUrl: 'https://api.mesto.lisena.nomoredomains.monster',
+    baseUrl: 'http://localhost:3000',
+    //baseUrl : `${window.location.protocol}${process.env.REACT_APP_API_URL || '//localhost:3001'}`,
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
